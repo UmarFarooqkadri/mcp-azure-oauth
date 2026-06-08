@@ -1,0 +1,12 @@
+tenant_id = "your-tenant-id"
+app_name  = "My Secured MCP App"
+
+redirect_uris = [
+  "http://localhost:8000/auth/callback",
+  "http://localhost:50345/callback",
+]
+
+scopes = [
+  { value = "read",  description = "Read access" },
+  { value = "write", description = "Write access" },
+]
