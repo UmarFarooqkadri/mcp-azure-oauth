@@ -140,6 +140,41 @@ export ARM_TENANT_ID="<tenant-id>"
 export ARM_SUBSCRIPTION_ID="<subscription-id>"
 ```
 
+## Required Permissions
+
+The identity running `terraform apply` (user or service principal) must have the following permissions. These have been tested and confirmed.
+
+**Azure RBAC on the Resource Group containing the Key Vault:**
+
+| Role | Purpose |
+|---|---|
+| `Contributor` | Create and manage resources in the RG |
+| `User Access Administrator` | Assign "Key Vault Secrets Officer" to itself on the KV during apply |
+
+Note: `User Access Administrator` at the RG level covers the KV automatically since the KV is inside the RG. No KV-specific role assignments are needed upfront.
+
+**Microsoft Graph (Azure AD):**
+
+| Permission | Type | Purpose |
+|---|---|---|
+| `Application.ReadWrite.OwnedBy` | Application | Create and manage App Registrations owned by the SP |
+
+To grant Microsoft Graph permissions to a service principal via CLI:
+
+```bash
+# Add the permission
+az ad app permission add \
+  --id <sp-app-id> \
+  --api 00000003-0000-0000-c000-000000000000 \
+  --api-permissions 18a4783c-866b-4cc7-a460-3d5e5662c884=Role
+
+# Grant admin consent
+az ad app permission grant \
+  --id <sp-app-id> \
+  --api 00000003-0000-0000-c000-000000000000 \
+  --scope "Application.ReadWrite.OwnedBy"
+```
+
 ## Notes
 
 - The `client_secret` output is marked sensitive. Retrieve it with `terraform output -raw client_secret`.
