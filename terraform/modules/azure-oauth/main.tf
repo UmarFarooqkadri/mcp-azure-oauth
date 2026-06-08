@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = "~> 2.0"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.0"
+    }
     time = {
       source  = "hashicorp/time"
       version = "~> 0.9"
@@ -58,4 +62,22 @@ resource "azuread_application_password" "this" {
   rotate_when_changed = {
     rotation = time_rotating.secret_expiry.id
   }
+}
+
+data "azurerm_client_config" "current" {}
+
+resource "azurerm_role_assignment" "kv_secrets_officer" {
+  count                = var.key_vault_id != null ? 1 : 0
+  scope                = var.key_vault_id
+  role_definition_name = "Key Vault Secrets Officer"
+  principal_id         = data.azurerm_client_config.current.object_id
+}
+
+resource "azurerm_key_vault_secret" "client_secret" {
+  count        = var.key_vault_id != null ? 1 : 0
+  name         = var.key_vault_secret_name
+  value        = azuread_application_password.this.value
+  key_vault_id = var.key_vault_id
+
+  depends_on = [azurerm_role_assignment.kv_secrets_officer]
 }

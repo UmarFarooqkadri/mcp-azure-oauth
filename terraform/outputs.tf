@@ -14,3 +14,8 @@ output "tenant_id" {
 output "identifier_uri" {
   value = module.azure_oauth.identifier_uri
 }
+
+output "client_secret_uri" {
+  description = "Key Vault URI for the client secret. Only set when key_vault_id is provided."
+  value       = module.azure_oauth.client_secret_uri
+}

@@ -4,7 +4,7 @@ output "client_id" {
 }
 
 output "client_secret" {
-  description = "Client secret value"
+  description = "Client secret value. Only use this when key_vault_id is not provided."
   value       = azuread_application_password.this.value
   sensitive   = true
 }
@@ -22,4 +22,9 @@ output "identifier_uri" {
 output "redirect_uris" {
   description = "Registered redirect URIs"
   value       = var.redirect_uris
+}
+
+output "client_secret_uri" {
+  description = "Key Vault secret URI for the client secret. Only set when key_vault_id is provided."
+  value       = var.key_vault_id != null ? azurerm_key_vault_secret.client_secret[0].id : null
 }

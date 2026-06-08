@@ -1,5 +1,6 @@
-tenant_id = "your-tenant-id"
-app_name  = "My Secured MCP App"
+tenant_id       = "your-tenant-id"
+subscription_id = "your-subscription-id"
+app_name        = "My Secured MCP App"
 
 redirect_uris = [
   "http://localhost:8000/auth/callback",
@@ -10,3 +11,6 @@ scopes = [
   { value = "read",  description = "Read access" },
   { value = "write", description = "Write access" },
 ]
+
+# Optional: remove or set to null to skip Key Vault storage
+key_vault_id = "/subscriptions/<sub-id>/resourceGroups/<rg-name>/providers/Microsoft.KeyVault/vaults/<kv-name>"
