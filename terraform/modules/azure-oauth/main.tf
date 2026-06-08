@@ -27,6 +27,8 @@ resource "azuread_application" "this" {
   }
 
   api {
+    requested_access_token_version = 2
+
     dynamic "oauth2_permission_scope" {
       for_each = { for s in var.scopes : s.value => s }
       content {
