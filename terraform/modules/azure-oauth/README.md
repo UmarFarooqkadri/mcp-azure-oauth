@@ -120,3 +120,14 @@ export ARM_TENANT_ID="<tenant-id>"
 - Scope IDs are stable random UUIDs generated once and stored in Terraform state. Changing a scope's `value` will destroy and recreate it.
 - The client secret automatically rotates every `secret_expiry_months` months via `time_rotating`. After rotation, update your deployment with the new secret from `terraform output -raw client_secret`.
 - The `identifier_uri` (`api://<client_id>`) matches the default FastMCP `AzureProvider` configuration and does not need to be set explicitly in `server.py` unless overridden.
+
+## Not yet parameterized
+
+The following are hardcoded to sensible defaults but can be extended if your use case requires it:
+
+| Property | Hardcoded value | When to change |
+|---|---|---|
+| `sign_in_audience` | `AzureADMyOrg` (single tenant) | Set to `AzureADMultipleOrgs` for multi-tenant apps. Note: this requires a destroy and recreate of the App Registration. |
+| `type` per scope | `User` | Change to `Admin` for scopes that should require admin consent rather than user consent. |
+| `identifier_uri` | `api://<client_id>` | Override if you need a vanity URI such as `api://myapp.example.com`. |
+| `requested_access_token_version` | `2` | No reason to change this for modern Azure AD applications. |
