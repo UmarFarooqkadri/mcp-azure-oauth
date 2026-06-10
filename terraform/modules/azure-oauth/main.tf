@@ -49,10 +49,6 @@ resource "azuread_application" "this" {
   }
 }
 
-resource "azuread_service_principal" "this" {
-  client_id = azuread_application.this.client_id
-}
-
 resource "time_rotating" "secret_expiry" {
   rotation_months = var.secret_expiry_months
 }

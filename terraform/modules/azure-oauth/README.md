@@ -94,7 +94,6 @@ environment_variables = {
 |------|------|
 | azuread_application.this | resource |
 | azuread_application_password.this | resource |
-| azuread_service_principal.this | resource |
 | azurerm_key_vault_secret.client_secret | resource (conditional) |
 | azurerm_role_assignment.kv_secrets_officer | resource (conditional) |
 | random_uuid.scope_id | resource |
